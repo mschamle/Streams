@@ -1,0 +1,13 @@
+/.idea/
+/HelloWorldRestService.iml
+
+#Build targets
+target/
+/target
+*/target
+
+# Package Files #
+*.war
+*.ear
+
+*.class
