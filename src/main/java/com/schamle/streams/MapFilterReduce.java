@@ -38,7 +38,7 @@ public class MapFilterReduce {
         compareReductions(op2);
         System.out.println("*********************************");
 
-        BinaryOperator<Integer> op3 = (i1,i2) -> (i1+i2)/2;  // average: non-associative
+        BinaryOperator<Integer> op3 = (i1,i2) -> (i1+i2)/2;  // ***** average: non-associative, does not work like this *****
         System.out.println("operation = (i1,i2) -> (i1+i2)/2");
         compareReductions(op3);
         System.out.println("*********************************");
