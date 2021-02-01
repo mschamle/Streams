@@ -1,8 +1,10 @@
 package com.schamle.streams;
 
+import com.schamle.domain.Person;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BinaryOperator;
 
 /**
  * Simple Map-Filter-Reduce use case
@@ -23,52 +25,19 @@ import java.util.function.BinaryOperator;
  */
 public class MapFilterReduce {
     public static void main(String[] args) {
-        BinaryOperator<Integer> op = (i1,i2) -> i1 + i2;
-        System.out.println("operation = (i1,i2) -> i1 + i2");
-        compareReductions(op);
-        System.out.println("*********************************");
+        Person p1 = new Person("Bob", "Smith", 24);
+        Person p2 = new Person("Jane", "Goodall", 64);
+        Person p3 = new Person("Steve", "Martin", 45);
+        Person p4 = new Person("Maurice", "Pepin", 71);
+        Person p5 = new Person("Eddie", "Beb", 16);
 
-        BinaryOperator<Integer> op1 = (i1,i2) -> Integer.max(i1,i2);  //would be non-associative if values passed in are all negative
-        System.out.println("operation = (i1,i2) -> Integer.max(i1,i2)");
-        compareReductions(op1);
-        System.out.println("*********************************");
+        List<Person> people = new ArrayList<>(Arrays.asList(p1,p2,p3,p4, p5));
+        people.stream()
+                .map(Person::getAge)
+                .peek(System.out::println)  //not allowed to do forEach() here because it is terminal call and doesn't return Stream<T> so we can't continue
+                .filter(age -> age > 20) //another new Stream<Integer>, not heavy because Stream contains no data
+                .forEach(System.out::println);  //can't use peek() here because it is an intermediate operation, need
+                                                // terminal operation to trigger stream processing
 
-        BinaryOperator<Integer> op2 = (i1,i2) -> (i1+i2)*(i1+i2);  //non-associative
-        System.out.println("operation = (i1,i2) -> (i1+i2)*(i1+i2)");
-        compareReductions(op2);
-        System.out.println("*********************************");
-
-        BinaryOperator<Integer> op3 = (i1,i2) -> (i1+i2)/2;  // ***** average: non-associative, does not work like this *****
-        System.out.println("operation = (i1,i2) -> (i1+i2)/2");
-        compareReductions(op3);
-        System.out.println("*********************************");
-    }
-
-    private static void compareReductions(BinaryOperator<Integer> reduction) {
-        List<Integer> ints = Arrays.asList(0,1,2,3,4,5,6,7,8,9);
-
-        //sublists to simulate parallel computing
-        List<Integer> ints1 = Arrays.asList(0,1,2,3,4);
-        List<Integer> ints2 = Arrays.asList(5,6,7,8,9);
-
-        int reductionSimple = reduce(ints, 0, reduction);
-
-        System.out.println("reductionSimple = " + reductionSimple);
-
-        //simulate effect of running on 2 cores in parallel
-        int reduction1 = reduce(ints1, 0, reduction);
-        int reduction2 = reduce(ints2, 0, reduction);
-        int reductionParallel = reduce(Arrays.asList(reduction1, reduction2), 0, reduction);
-
-        System.out.println("reductionParallel = " + reductionParallel);
-    }
-
-    private static int reduce(List<Integer> values, int valueIfEmpty, BinaryOperator<Integer> reduction){
-        int result = valueIfEmpty; //assign identity element
-
-        for (int value: values) {
-            result = reduction.apply(result, value);
-        }
-        return result;
     }
 }
