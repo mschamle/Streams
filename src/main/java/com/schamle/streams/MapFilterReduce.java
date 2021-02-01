@@ -10,11 +10,11 @@ package com.schamle.streams;
  *
  * Filter - Filter out people that are under 21.  Does not change type of collection
  *
- * Reduce - reduce to an average amount (Aggregation in SQL sense).  This changes object type
- *
- * Caveats - be aware of associative nature of lambda expression for reduction (code will compile, execute and return
- *          result but will give a wrong answer.  One way to tell is different runs giving different results because of
- *          parallelism
+ * Reduce   - reduce to an average amount (Aggregation in SQL sense).  This changes object type
+ *          - be aware of associative nature of lambda expression for reduction (code will compile, execute and return
+ *            result but will give a wrong answer.  One way to tell is different runs giving different results because of
+ *            parallelism
+ *          - when working over multiple values be aware of what the initial value is (sum or max operation)
  */
 public class MapFilterReduce {
 }
