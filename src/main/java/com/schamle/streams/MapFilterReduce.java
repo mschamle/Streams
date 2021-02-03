@@ -32,12 +32,13 @@ public class MapFilterReduce {
         Person p5 = new Person("Eddie", "Beb", 16);
 
         List<Person> people = new ArrayList<>(Arrays.asList(p1,p2,p3,p4, p5));
-        people.stream()
-                .map(Person::getAge)
-                .peek(System.out::println)  //not allowed to do forEach() here because it is terminal call and doesn't return Stream<T> so we can't continue
+        double average = people.stream()
+                .mapToInt(Person::getAge) //convert to IntStream
                 .filter(age -> age > 20) //another new Stream<Integer>, not heavy because Stream contains no data
-                .forEach(System.out::println);  //can't use peek() here because it is an intermediate operation, need
-                                                // terminal operation to trigger stream processing
+                .peek(age -> System.out.println("filtered age: " + age))  //not allowed to do forEach() here because it is terminal call and doesn't return Stream<T> so we can't continue
+                .average() //method of IntStream
+                .orElse(-1);
 
+        System.out.println("average = " + average);
     }
 }

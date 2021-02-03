@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.function.BinaryOperator;
 
 /**
- * Test Reduction
+ * Test Reduction Associativity
  *  * Reduce   - be aware of associative nature of lambda expression for reduction (code will compile, execute and return
  *  *            result but will give a wrong answer.  One way to tell is different runs giving different results because of
  *  *            parallelism
  *  *          - when working over multiple values be aware of what the initial value is (sum or max operation).  This is called
  *  *            the identity element.  Would be 0 for sum but this might not work for others, example: 0 for max/min if we have negative values.
  */
-public class ReduceStep {
+public class ReductionAssociativity {
     public static void main(String[] args) {
         BinaryOperator<Integer> op = (i1, i2) -> i1 + i2;
         System.out.println("operation = (i1,i2) -> i1 + i2");
